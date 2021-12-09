@@ -1,0 +1,25 @@
+{
+    "extends": [
+        "stylelint-config-standard",
+        "@linaria/stylelint"
+    ],
+    "customSyntax": "post-css-in-js",
+    "rules": {
+        "color-hex-case": [
+            "lower",
+            {
+                "message": "Lowercase letters are easier to distinguish from numbers"
+            }
+        ],
+        "indentation": [
+            2,
+            {
+                "except": [
+                    "block"
+                ],
+                "message": "Please use 2 spaces for indentation.",
+                "severity": "warning"
+            }
+        ]
+    }
+}
