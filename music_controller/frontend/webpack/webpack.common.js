@@ -15,14 +15,34 @@ module.exports = {
         filename: 'bundle.[name].js'
     },
     optimization: {
-        minimize: true
+        minimize: false,
+        splitChunks: {
+            chunks: 'all',
+            cacheGroups: {
+                vendor: {
+                    test: /[\\/]node_modules[\\/]/,
+                    name(module) {
+                        // get the name. E.g. node_modules/packageName/not/this/part.js
+                        // or node_modules/packageName
+                        const packageName = module.context.match(
+                            /[\\/]node_modules[\\/](.*?)([\\/]|$)/
+                        )[1];
+
+                        // npm package names are URL-safe, but some servers don't like @ symbols
+                        return `npm.${packageName.replace('@', '')}`;
+                    }
+                },
+            }
+        },
     },
     plugins: [
         new CleanWebpackPlugin({ dangerouslyAllowCleanPatternsOutsideProject: true, dry: false }),
         new HtmlWebpackPlugin({
-            template: path.resolve(__dirname, '../src/index.ejs'),
+            template:'!!ejs-webpack-loader!/templates/custom-insertion/index.ejs',
             filename: path.resolve(__dirname, '../templates/frontend-base.html'),
-            inject: false
+            inject: false,
+            minify: false,
+            hash: false
         }),
         new BundleTracker({ filename: 'webpack-stats.json' })
     ],

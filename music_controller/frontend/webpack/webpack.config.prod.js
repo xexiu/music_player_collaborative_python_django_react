@@ -3,6 +3,7 @@ const Webpack = require('webpack');
 const { merge } = require('webpack-merge');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const common = require('./webpack.common.js');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = merge(common, {
     mode: 'production',
@@ -12,11 +13,15 @@ module.exports = merge(common, {
         path: path.resolve(__dirname, '../static/dist'),
         filename: '../dist/js/bundle.[name].[chunkhash:8].js',
     },
+    optimization: {
+        minimize: true
+    },
     plugins: [
+        new CleanWebpackPlugin(),
         new Webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify('production'),
         }),
-        new MiniCssExtractPlugin({ filename: '../dist/css/styles.[contenthash].css' }),
+        new MiniCssExtractPlugin({ filename: '../dist/css/styles.[contenthash].css' })
     ],
     module: {
         rules: [
