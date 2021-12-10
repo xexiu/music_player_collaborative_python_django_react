@@ -27,6 +27,8 @@ yarn-error.log*
 #### FRONTEND ####
 
 music_controller/frontend/static/*.*
+music_controller/frontend/static/css
+music_controller/frontend/static/js
 music_controller/frontend/webpack-stats.json
 
 ######## PYTHON ######
