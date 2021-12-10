@@ -25,7 +25,6 @@ yarn-error.log*
 
 
 #### FRONTEND ####
-
 music_controller/frontend/static/*.*
 music_controller/frontend/static/css
 music_controller/frontend/static/js
@@ -46,7 +45,6 @@ __pycache__/
 .Python
 build/
 develop-eggs/
-dist/
 downloads/
 eggs/
 .eggs/
