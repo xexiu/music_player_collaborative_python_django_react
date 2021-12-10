@@ -1,0 +1,63 @@
+{
+  "status": "done",
+  "assets": {
+    "../css/styles.css": {
+      "name": "../css/styles.css",
+      "path": "/Users/sergiumironescuiancu1/Desktop/Sergio/FULLSTACK/music_player_collaborative_python_django_react/music_controller/frontend/static/css/styles.css",
+      "publicPath": "http://localhost:9091/../css/styles.css"
+    },
+    "bundle.app.js": {
+      "name": "bundle.app.js",
+      "path": "/Users/sergiumironescuiancu1/Desktop/Sergio/FULLSTACK/music_player_collaborative_python_django_react/music_controller/frontend/static/js/bundle.app.js",
+      "publicPath": "http://localhost:9091/bundle.app.js"
+    },
+    "bundle.app.js.LICENSE.txt": {
+      "name": "bundle.app.js.LICENSE.txt",
+      "path": "/Users/sergiumironescuiancu1/Desktop/Sergio/FULLSTACK/music_player_collaborative_python_django_react/music_controller/frontend/static/js/bundle.app.js.LICENSE.txt",
+      "publicPath": "http://localhost:9091/bundle.app.js.LICENSE.txt"
+    },
+    "../../templates/frontend-base.html": {
+      "name": "../../templates/frontend-base.html",
+      "path": "/Users/sergiumironescuiancu1/Desktop/Sergio/FULLSTACK/music_player_collaborative_python_django_react/music_controller/frontend/templates/frontend-base.html",
+      "publicPath": "http://localhost:9091/../../templates/frontend-base.html"
+    },
+    "app.baa73eb8a04c2b4614ad.hot-update.js": {
+      "name": "app.baa73eb8a04c2b4614ad.hot-update.js",
+      "path": "/Users/sergiumironescuiancu1/Desktop/Sergio/FULLSTACK/music_player_collaborative_python_django_react/music_controller/frontend/static/js/app.baa73eb8a04c2b4614ad.hot-update.js",
+      "publicPath": "http://localhost:9091/app.baa73eb8a04c2b4614ad.hot-update.js"
+    },
+    "app.baa73eb8a04c2b4614ad.hot-update.json": {
+      "name": "app.baa73eb8a04c2b4614ad.hot-update.json",
+      "path": "/Users/sergiumironescuiancu1/Desktop/Sergio/FULLSTACK/music_player_collaborative_python_django_react/music_controller/frontend/static/js/app.baa73eb8a04c2b4614ad.hot-update.json",
+      "publicPath": "http://localhost:9091/app.baa73eb8a04c2b4614ad.hot-update.json"
+    },
+    "app.baa73eb8a04c2b4614ad.hot-update.js.LICENSE.txt": {
+      "name": "app.baa73eb8a04c2b4614ad.hot-update.js.LICENSE.txt",
+      "path": "/Users/sergiumironescuiancu1/Desktop/Sergio/FULLSTACK/music_player_collaborative_python_django_react/music_controller/frontend/static/js/app.baa73eb8a04c2b4614ad.hot-update.js.LICENSE.txt",
+      "publicPath": "http://localhost:9091/app.baa73eb8a04c2b4614ad.hot-update.js.LICENSE.txt"
+    },
+    "app.68f2a339cbb3aafcd731.hot-update.js": {
+      "name": "app.68f2a339cbb3aafcd731.hot-update.js",
+      "path": "/Users/sergiumironescuiancu1/Desktop/Sergio/FULLSTACK/music_player_collaborative_python_django_react/music_controller/frontend/static/js/app.68f2a339cbb3aafcd731.hot-update.js",
+      "publicPath": "http://localhost:9091/app.68f2a339cbb3aafcd731.hot-update.js"
+    },
+    "app.68f2a339cbb3aafcd731.hot-update.json": {
+      "name": "app.68f2a339cbb3aafcd731.hot-update.json",
+      "path": "/Users/sergiumironescuiancu1/Desktop/Sergio/FULLSTACK/music_player_collaborative_python_django_react/music_controller/frontend/static/js/app.68f2a339cbb3aafcd731.hot-update.json",
+      "publicPath": "http://localhost:9091/app.68f2a339cbb3aafcd731.hot-update.json"
+    },
+    "app.68f2a339cbb3aafcd731.hot-update.js.LICENSE.txt": {
+      "name": "app.68f2a339cbb3aafcd731.hot-update.js.LICENSE.txt",
+      "path": "/Users/sergiumironescuiancu1/Desktop/Sergio/FULLSTACK/music_player_collaborative_python_django_react/music_controller/frontend/static/js/app.68f2a339cbb3aafcd731.hot-update.js.LICENSE.txt",
+      "publicPath": "http://localhost:9091/app.68f2a339cbb3aafcd731.hot-update.js.LICENSE.txt"
+    }
+  },
+  "chunks": {
+    "app": [
+      "../css/styles.css",
+      "bundle.app.js",
+      "app.68f2a339cbb3aafcd731.hot-update.js"
+    ]
+  },
+  "publicPath": "http://localhost:9091/"
+}
