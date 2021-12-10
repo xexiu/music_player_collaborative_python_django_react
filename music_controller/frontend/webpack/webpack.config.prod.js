@@ -4,6 +4,8 @@ const { merge } = require('webpack-merge');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const common = require('./webpack.common.js');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = merge(common, {
     mode: 'production',
@@ -14,14 +16,21 @@ module.exports = merge(common, {
         filename: '../dist/js/bundle.[name].[chunkhash:8].js',
     },
     optimization: {
-        minimize: true
+        minimize: true,
+        minimizer: [new TerserPlugin({
+            parallel: true
+        })]
     },
     plugins: [
         new CleanWebpackPlugin(),
         new Webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify('production'),
         }),
-        new MiniCssExtractPlugin({ filename: '../dist/css/styles.[contenthash].css' })
+        new MiniCssExtractPlugin({ filename: '../dist/css/styles.[contenthash].css' }),
+        new BundleAnalyzerPlugin({
+            analyzerMode: 'static', //para que lo haga sólo al momento de hacer el build
+            openAnalyzer: true, //para que nos muestre el resultado inmediatamente
+        })
     ],
     module: {
         rules: [

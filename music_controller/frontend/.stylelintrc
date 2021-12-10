@@ -3,7 +3,7 @@
         "stylelint-config-standard",
         "@linaria/stylelint"
     ],
-    "customSyntax": "post-css-in-js",
+    "customSyntax": "postcss",
     "rules": {
         "color-hex-case": [
             "lower",

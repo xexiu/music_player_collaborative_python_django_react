@@ -3,6 +3,7 @@ const { merge } = require('webpack-merge');
 const ESLintPlugin = require('eslint-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const common = require('./webpack.common.js');
 const PORT = 9091;
@@ -43,7 +44,11 @@ module.exports = merge(common, {
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify('development')
         }),
-        new MiniCssExtractPlugin({ filename: '../css/styles.css' })
+        new MiniCssExtractPlugin({ filename: '../css/styles.css' }),
+        new BundleAnalyzerPlugin({
+            analyzerMode: 'static', //para que lo haga sólo al momento de hacer el build
+            openAnalyzer: false, //para que nos muestre el resultado inmediatamente
+        })
     ],
     devServer: {
         historyApiFallback: true,
