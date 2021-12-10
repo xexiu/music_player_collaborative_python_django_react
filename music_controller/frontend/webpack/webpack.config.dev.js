@@ -14,6 +14,9 @@ module.exports = merge(common, {
     output: {
         publicPath: `http://localhost:${PORT}/`,
     },
+    optimization: {
+        minimize: false
+    },
     module: {
         rules: [
             {
