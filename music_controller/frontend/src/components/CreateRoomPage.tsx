@@ -32,7 +32,7 @@ const CreateRoomPage = () => {
         };
     }
 
-    function handleSubmitButton(event: { preventDefault: () => void; }) {
+    async function handleSubmitButton(event: { preventDefault: () => void; }) {
         const { guestCanPause, votesToSkip }: { guestCanPause: boolean, votesToSkip: number } = allValues;
 
         event.preventDefault();
@@ -42,13 +42,14 @@ const CreateRoomPage = () => {
                 'Content-Type': 'application/json'
             }
         };
-        return axios.post('/api/create-room', {
-            votes_to_skip: JSON.parse(votesToSkip as any),
-            guest_can_pause: JSON.parse(guestCanPause as any)
-        }, options)
-            .then(resp => {
-                return resp.data;
-            });
+        try {
+            return await axios.post('/api/create-room', {
+                votes_to_skip: JSON.parse(votesToSkip as any),
+                guest_can_pause: JSON.parse(guestCanPause as any)
+            }, options);
+        } catch (error) {
+            console.log('Oops. Creating Room Error:', error);
+        }
     }
 
     return (
