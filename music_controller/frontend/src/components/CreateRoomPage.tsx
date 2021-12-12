@@ -11,11 +11,12 @@ import {
 } from '@material-ui/core';
 import axios from 'axios';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const DEFAULT_VOTES = 2;
 
 const CreateRoomPage = () => {
+    const navigate = useNavigate();
     const [allValues, setAllValues] = useState({
         guestCanPause: true,
         votesToSkip: DEFAULT_VOTES
@@ -43,10 +44,11 @@ const CreateRoomPage = () => {
             }
         };
         try {
-            return await axios.post('/api/create-room', {
+            const { data } = await axios.post('/api/create-room', {
                 votes_to_skip: JSON.parse(votesToSkip as any),
                 guest_can_pause: JSON.parse(guestCanPause as any)
             }, options);
+            return navigate({ pathname: `/room/${data.code}`});
         } catch (error) {
             console.log('Oops. Creating Room Error:', error);
         }
