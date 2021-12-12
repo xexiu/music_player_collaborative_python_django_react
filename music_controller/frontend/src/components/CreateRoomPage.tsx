@@ -1,3 +1,4 @@
+import { styled } from '@linaria/react';
 import {
     Button,
     FormControl,
@@ -14,6 +15,12 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 const DEFAULT_VOTES = 2;
+
+const Center = styled.section`
+    text-align: center;
+    width: 400px;
+    padding: 4px;
+`;
 
 const CreateRoomPage = () => {
     const navigate = useNavigate();
@@ -48,14 +55,15 @@ const CreateRoomPage = () => {
                 votes_to_skip: JSON.parse(votesToSkip as any),
                 guest_can_pause: JSON.parse(guestCanPause as any)
             }, options);
-            return navigate({ pathname: `/room/${data.code}`});
+            return navigate({ pathname: `/room/${data.code}` });
         } catch (error) {
             console.log('Oops. Creating Room Error:', error);
         }
     }
 
     return (
-        <Grid container spacing={1} alignContent='center'>
+        <Grid container spacing={1} alignItems='center'>
+            <Center>
             <Grid item xs={12}>
                 <Typography component='h4' variant='h4'>
                     Create a Room
@@ -102,15 +110,20 @@ const CreateRoomPage = () => {
                     />
                     <FormHelperText>
                         Votes requiered to skip song
+                        <br />
+                        <br />
                     </FormHelperText>
                 </FormControl>
             </Grid>
             <Grid item xs={12}>
                 <Button color='primary' variant='contained' onClick={handleSubmitButton}>Create a Room</Button>
+                <br />
+                <br />
             </Grid>
             <Grid item xs={12}>
                 <Button color='secondary' variant='contained' to='/' component={Link}>Back</Button>
             </Grid>
+            </Center>
         </Grid>
     );
 };
