@@ -1,11 +1,17 @@
 from datetime import datetime, timezone
 
+from django.http import JsonResponse
 from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .models import Room
 from .serializers import CreateRoomSerializer, RoomSerializer
+
+
+def checkSession(self):
+    if not self.request.session.exists(self.request.session.session_key):
+        self.request.session.create()
 
 
 class RoomView(generics.ListAPIView):
@@ -34,8 +40,7 @@ class JoinRoom(APIView):
     look_up_kwarg = 'code'
 
     def post(self, request, format=None):
-        if not self.request.session.exists(self.request.session.session_key):
-            self.request.session.create()
+        checkSession(self)
 
         code = request.data.get(self.look_up_kwarg)
 
@@ -54,8 +59,7 @@ class CreateRoomView(APIView):
     serializer_class = CreateRoomSerializer
 
     def post(self, request, format=None):
-        if not self.request.session.exists(self.request.session.session_key):
-            self.request.session.create()
+        checkSession(self)
 
         serializer = self.serializer_class(data=request.data)
 
@@ -71,7 +75,8 @@ class CreateRoomView(APIView):
                 room.guest_can_pause = guest_can_pause
                 room.votes_to_skip = votes_to_skip
                 room.created_at = created_at
-                room.save(update_fields=['guest_can_pause', 'votes_to_skip', 'created_at'])
+                room.save(update_fields=[
+                          'guest_can_pause', 'votes_to_skip', 'created_at'])
                 self.request.session['room_code'] = room.code
             else:
                 room = Room.objects.create(
@@ -81,3 +86,14 @@ class CreateRoomView(APIView):
 
             return Response(RoomSerializer(room).data, status=status.HTTP_200_OK)
         return Response({'errorMsg': 'Invalida data creating room...'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UserInRoom(APIView):
+    def get(self, request, format=None):
+        checkSession(self)
+
+        data = {
+            'code': self.request.session.get('room_code')
+        }
+
+        return JsonResponse(data, status=status.HTTP_200_OK)
