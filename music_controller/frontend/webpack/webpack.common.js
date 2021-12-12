@@ -3,6 +3,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const BundleTracker = require('webpack-bundle-tracker');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const ESLintPlugin = require('eslint-webpack-plugin');
 
 const APP_PATH = path.resolve(__dirname, '../src');
 
@@ -36,6 +37,13 @@ module.exports = {
         },
     },
     plugins: [
+        new ESLintPlugin({
+            extensions: ['ts', 'tsx', 'js'],
+            emitError: true,
+            emitWarning: true,
+            failOnError: true,
+            failOnWarning: false
+        }),
         new CleanWebpackPlugin({ dangerouslyAllowCleanPatternsOutsideProject: true, dry: false }),
         new HtmlWebpackPlugin({
             template:'!!ejs-webpack-loader!/templates/custom-insertion/index.ejs',
@@ -49,7 +57,7 @@ module.exports = {
     resolve: {
         extensions: ['.ts', '.tsx', '.js', '.json'],
         alias: {
-            '~': path.resolve(__dirname, '../src'),
+            '~': path.resolve(__dirname, '../src')
         },
     },
     module: {

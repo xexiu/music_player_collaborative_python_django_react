@@ -6,6 +6,7 @@ const common = require('./webpack.common.js');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const TerserPlugin = require('terser-webpack-plugin');
+const ESLintPlugin = require('eslint-webpack-plugin');
 
 module.exports = merge(common, {
     mode: 'production',
@@ -22,6 +23,13 @@ module.exports = merge(common, {
         })]
     },
     plugins: [
+        new ESLintPlugin({
+            extensions: ['ts', 'tsx', 'js'],
+            emitError: true,
+            emitWarning: true,
+            failOnError: true,
+            failOnWarning: true
+        }),
         new CleanWebpackPlugin(),
         new Webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify('production'),

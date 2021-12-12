@@ -5,8 +5,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build:prod": "webpack --progress --mode production --env=production --config ./webpack/webpack.config.prod.js",
-    "build:dev": "webpack serve --progress --config ./webpack/webpack.config.dev.js",
+    "build:prod": "webpack --progress --mode=production --env=production --config ./webpack/webpack.config.prod.js",
+    "build:dev": "webpack serve --progress --mode=development --config ./webpack/webpack.config.dev.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint:css": "stylelint src/**/*.tsx"
   },
@@ -63,6 +63,7 @@
     "@linaria/webpack-loader": "^3.0.0-beta.16",
     "@material-ui/core": "^4.12.3",
     "@material-ui/icons": "^4.11.2",
+    "axios": "^0.24.0",
     "ejs-webpack-loader": "^2.2.2",
     "react-router-dom": "^6.0.2"
   }

@@ -1,4 +1,5 @@
 import { styled } from '@linaria/react';
+import HomePage from './HomePage';
 
 const Wrapper = styled.section`
     padding: 4em;
@@ -8,7 +9,8 @@ const Wrapper = styled.section`
 const App = () => {
     return (
         <Wrapper>
-            <h1>Testing React Component</h1>
+            <h1>Testing App React Component</h1>
+            <HomePage />
         </Wrapper>
     );
 };

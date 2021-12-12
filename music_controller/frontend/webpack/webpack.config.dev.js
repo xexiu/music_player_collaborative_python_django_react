@@ -1,6 +1,5 @@
 const webpack = require('webpack');
 const { merge } = require('webpack-merge');
-const ESLintPlugin = require('eslint-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
@@ -37,17 +36,13 @@ module.exports = merge(common, {
         ]
     },
     plugins: [
-        new ESLintPlugin({
-            extensions: ['ts', 'tsx', 'js'],
-            emitWarning: true
-        }),
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify('development')
         }),
         new MiniCssExtractPlugin({ filename: '../css/styles.css' }),
         new BundleAnalyzerPlugin({
-            analyzerMode: 'static', //para que lo haga sólo al momento de hacer el build
-            openAnalyzer: false, //para que nos muestre el resultado inmediatamente
+            analyzerMode: 'static',
+            openAnalyzer: false
         })
     ],
     devServer: {
@@ -57,7 +52,7 @@ module.exports = merge(common, {
             directory: path.resolve(__dirname, '../static'),
         },
         client: {
-            logging: 'none',
+            logging: 'info', // Set 'none' to disable logs on developer console
             overlay: true,
             progress: true
         },

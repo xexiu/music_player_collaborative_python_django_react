@@ -31,6 +31,7 @@ module.exports = {
         'react/react-in-jsx-scope': 'off',
         '@typescript-eslint/no-explicit-any': 'off',
         '@typescript-eslint/no-var-requires': 0,
+        'no-debugger': 'off',
         '@typescript-eslint/quotes': [
             'error',
             'single',
