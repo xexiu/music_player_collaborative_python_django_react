@@ -73,16 +73,13 @@ const CreateRoomPage = () => {
                             control={<Radio color='primary' />}
                             label='Play/Pause'
                             labelPlacement='bottom'
-                        >
-
-                        </FormControlLabel>
+                        />
                         <FormControlLabel
                             value='false'
                             control={<Radio color='secondary' />}
                             label='No Control'
                             labelPlacement='bottom'
-                        >
-                        </FormControlLabel>
+                        />
                     </RadioGroup>
                 </FormControl>
             </Grid>
