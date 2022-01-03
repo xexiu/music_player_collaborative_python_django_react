@@ -34,7 +34,7 @@ const HomePage = () => {
         }
     }
 
-    function renderHomePage() {
+    function RenderHomePage() {
         return (
             <Grid container spacing={3}>
                 <Grid item xs={12}>
@@ -68,7 +68,7 @@ const HomePage = () => {
     return (
         <Router>
             <Routes>
-                <Route path='/' element={renderHomePage()} />
+                <Route path='/' element={< RenderHomePage />} />
                 <Route path='/join' element={<RoomJoinPage />} />
                 <Route path='/create' element={<CreateRoomPage />} />
                 <Route path='/room/:roomCode' element={<Room />} />
