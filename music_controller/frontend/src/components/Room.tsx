@@ -11,12 +11,39 @@ const Room = () => {
     const [allValues, setAllValues] = useState({
         guestCanPause: true,
         votesToSkip: 2,
-        isHost: false
+        isHost: false,
+        spotifyAuthenticated: false
     });
 
     useEffect(() => {
         getRoomDetails();
     }, []);
+
+    async function getAuthUrl() {
+        try {
+            const resp = await axios('/spotify/get-auth-url');
+            const { data }: any = resp;
+            window.location.replace(data.url);
+        } catch (error) {
+            console.log('AuthUrl error: ', error);
+        }
+    }
+
+    async function isAuthenticatedSpotify() {
+        try {
+            const resp = await axios('/spotify/is-authenticated');
+            const { data } = resp;
+            setAllValues(prev => {
+                return { ...prev, spotifyAuthenticated: data.status };
+            });
+            console.log(data.status);
+            if (!data.status) {
+                return getAuthUrl();
+            }
+        } catch (error) {
+            console.log('IsAuthenticathed error: ', error);
+        }
+    }
 
     async function getRoomDetails() {
         try {
@@ -26,7 +53,7 @@ const Room = () => {
                 return navigate('/', { replace: true });
             }
             const { data } = resp;
-            return setAllValues(prev => {
+            setAllValues(prev => {
                 return {
                     ...prev,
                     votesToSkip: data.votes_to_skip,
@@ -34,12 +61,11 @@ const Room = () => {
                     isHost: data.is_host
                 };
             });
+            if (data.is_host) {
+                return isAuthenticatedSpotify();
+            }
         } catch (error: any) {
             console.log('Error getting the room: ', error);
-            if (error.request.status === 404) {
-                console.log('Room not found', error);
-                return navigate('/', { replace: true });
-            }
         }
     }
 
@@ -55,15 +81,36 @@ const Room = () => {
             const resp = await axios.post('/api/leave-room', {}, options);
             const { message } = resp.data;
             console.log('Leaving room --> ', message);
-            return navigate('/', { replace: true });
+            location.href = '/';
         } catch (error: any) {
             console.log('Oops. Leaving Room Error:', error);
-            if (error.request.status === 404) {
+            if (error.request.status === 404 || error.request.status === 400) {
                 console.log('Room not found', error.status);
                 return navigate('/', { replace: true });
             }
         }
     }
+
+    const renderSettingsButton = () => {
+        return (
+            <Grid item xs={12}>
+                <Button
+                    variant='contained'
+                    color='primary'
+                    onClick={() => navigate(`/room/${params.roomCode}/settings`,
+                        {
+                            state: {
+                                votesToSkip,
+                                guestCanPause
+                            }
+                        }
+                    )}
+                >
+                    Settings
+                </Button>
+            </Grid>
+        );
+    };
 
     const { guestCanPause, votesToSkip, isHost } = allValues;
 
@@ -81,6 +128,7 @@ const Room = () => {
             <Grid item xs={12}>
                 <Typography>Is Host: {String(isHost)}</Typography>
             </Grid>
+            {isHost ? renderSettingsButton() : null}
             <Grid item xs={12}>
                 <Button variant='contained' color='secondary' onClick={handleLeaveRoom}>Leave Room</Button>
             </Grid>

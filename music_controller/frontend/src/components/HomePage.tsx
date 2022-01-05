@@ -8,6 +8,7 @@ import { BrowserRouter as Router, Link, Navigate, Route, Routes } from 'react-ro
 import CreateRoomPage from './CreateRoomPage';
 import Room from './Room';
 import RoomJoinPage from './RoomJoinPage';
+import RoomSettings from './RoomSettings';
 
 const HomePage = () => {
     const [allValues, setAllValues] = useState({
@@ -21,7 +22,8 @@ const HomePage = () => {
 
     async function isUserInRoom() {
         try {
-            const { data } = await axios('/api/user-in-room');
+            const resp = await axios('/api/user-in-room');
+            const { data } = resp;
             return setAllValues(prev => {
                 return {
                     ...prev,
@@ -60,6 +62,7 @@ const HomePage = () => {
                 <Routes>
                     <Route path='/room/:roomCode' element={<Room />} />
                     <Route path='/' element={<Navigate to={`/room/${allValues.roomCode}`} />} />
+                    <Route path='/room/:roomCode/settings' element={<RoomSettings />} />
                 </Routes>
             </Router>
         );
@@ -68,10 +71,11 @@ const HomePage = () => {
     return (
         <Router>
             <Routes>
-                <Route path='/' element={< RenderHomePage />} />
+                <Route path='/' element={<RenderHomePage />} />
                 <Route path='/join' element={<RoomJoinPage />} />
                 <Route path='/create' element={<CreateRoomPage />} />
                 <Route path='/room/:roomCode' element={<Room />} />
+                <Route path='/room/:roomCode/settings' element={<RoomSettings />} />
             </Routes>
         </Router>
     );

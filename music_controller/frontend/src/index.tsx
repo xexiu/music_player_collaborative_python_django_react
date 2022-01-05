@@ -1,4 +1,3 @@
-import React from 'react';
 import { render } from 'react-dom';
 import App from './components/App';
 import './index.css';
@@ -8,8 +7,6 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 render(
-    <React.StrictMode>
-        <App />
-    </React.StrictMode>,
+    <App />,
     document.getElementById('app')
 );
