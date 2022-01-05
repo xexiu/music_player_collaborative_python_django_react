@@ -75,9 +75,8 @@ module.exports = {
                 type: 'javascript/auto',
             },
             {
-                test: /.(scss|css)$/,
+                test: /\.(sa|sc|c)ss$/,
                 use: [
-                    'style-loader!css-loader',
                     'css-hot-loader',
                     MiniCssExtractPlugin.loader,
                     {

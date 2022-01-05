@@ -40,6 +40,7 @@ module.exports = merge(common, {
             'process.env.NODE_ENV': JSON.stringify('development')
         }),
         new MiniCssExtractPlugin({
+            insert: '#gradient',
             filename: '[name].css',
             chunkFilename: '[id].css'
         }),
