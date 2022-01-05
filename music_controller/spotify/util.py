@@ -1,12 +1,15 @@
 from datetime import timedelta
 
+import requests
+from django.shortcuts import redirect
 from django.utils import timezone
-from requests import post
+from requests import get, post, put
 
-from .credentials import CLIENT_ID, CLIENT_SECRET
+from .credentials import CLIENT_ID, CLIENT_SECRET, REDIRECT_URI
 from .models import SpotifyToken
 
 TOKEN_SPOTIFY_URL = 'https://accounts.spotify.com/api/token'
+BASE_URL = 'https://api.spotify.com/v1/me/'
 
 
 def get_user_tokens(session_key):
@@ -74,3 +77,50 @@ def refresh_spotify_token(session_key):
     })
 
     update_or_create_user_tokens(session_key, **data)
+
+
+def spotify_callback(request, format=None):
+    code = request.GET.get('code')
+    error = request.GET.get('error')
+    data = get_spotify_data_token({
+        'grant_type': 'authorization_code',
+        'code': code,
+        'redirect_uri': REDIRECT_URI
+    })
+
+    if not request.session.exists(request.session.session_key):
+        request.session.create()
+
+    update_or_create_user_tokens(request.session.session_key, **data)
+    # The app must have an app_name --> check urls.py from frontend
+    # Redirects to an app. For example: frontend (app_name)
+    # To redirect to app home -> frontend:
+    # To redirect to app's page -> frontend:room
+    return redirect('frontend:')
+
+
+def execute_spotify_api_request(session_id, endpoint, post_=False, put_=False):
+    tokens = get_user_tokens(session_id)
+    headers = {'Content-Type': 'application/json',
+               'Authorization': f'Bearer ' + tokens.access_token}
+
+    if post_:
+        post(BASE_URL + endpoint, headers=headers)
+    if put_:
+        resp = requests.put(BASE_URL + endpoint, headers=headers)
+        print('RESP', resp.text)
+        return resp.ok
+
+    response = get(BASE_URL + endpoint, {}, headers=headers)
+    try:
+        return response.json()
+    except:
+        return {'Error': 'Issue with request'}
+
+
+def play_song(session_id):
+    return execute_spotify_api_request(session_id, 'player/play', put_=True)
+
+
+def pause_song(session_id):
+    return execute_spotify_api_request(session_id, 'player/pause', put_=True)

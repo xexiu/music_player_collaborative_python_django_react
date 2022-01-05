@@ -1,23 +1,77 @@
 import {
-    Button, Grid, Typography
+    Button, Collapse, Grid, Typography
 } from '@material-ui/core';
+import Alert from '@material-ui/lab/Alert';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import MusicPlayer from './MusicPlayer';
+
+interface Song {
+    title: string;
+    artist: string;
+    duration: number;
+    time: number;
+    image_url: string;
+    is_playing: boolean;
+    votes: number;
+    id: string;
+}
+interface StateProps {
+    guestCanPause: boolean;
+    votesToSkip: number;
+    isHost: boolean;
+    spotifyAuthenticated: boolean;
+    errorMsg: string;
+    song: Song;
+}
 
 const Room = () => {
     const params = useParams();
     const navigate = useNavigate();
-    const [allValues, setAllValues] = useState({
+    const [allValues, setAllValues] = useState<StateProps>({
         guestCanPause: true,
         votesToSkip: 2,
         isHost: false,
-        spotifyAuthenticated: false
+        spotifyAuthenticated: false,
+        errorMsg: '',
+        song: {} as Song
     });
 
     useEffect(() => {
         getRoomDetails();
+        getCurrentSong()
+        // const interval = setInterval(getCurrentSong, 1000);
+        return () => {
+            // clearInterval(interval);
+        };
     }, []);
+
+    async function getCurrentSong() {
+        try {
+            const resp = await axios('/spotify/current-song');
+            const song: Song = resp.data;
+            console.log('Song', song);
+
+            if (!Object.keys(song).length) {
+                return setAllValues(prev => {
+                    return {
+                        ...prev,
+                        errorMsg: 'Please Open Spotify and play first song then refresh this page!'
+                    };
+                });
+            }
+
+            setAllValues(prev => {
+                return {
+                    ...prev,
+                    song
+                };
+            });
+        } catch (error) {
+            console.log('getCurrentSong error: ', error);
+        }
+    }
 
     async function getAuthUrl() {
         try {
@@ -66,6 +120,14 @@ const Room = () => {
             }
         } catch (error: any) {
             console.log('Error getting the room: ', error);
+            if (error.request.status === 404 || error.request.status === 400) {
+                setAllValues(prev => {
+                    return {
+                        ...prev,
+                        errorMsg: 'Room not found or doesn\'t exist!! ' + params?.roomCode
+                    };
+                });
+            }
         }
     }
 
@@ -93,7 +155,7 @@ const Room = () => {
 
     const renderSettingsButton = () => {
         return (
-            <Grid item xs={12}>
+            <Grid item xs={6} style={{ marginTop: 10 }}>
                 <Button
                     variant='contained'
                     color='primary'
@@ -115,21 +177,30 @@ const Room = () => {
     const { guestCanPause, votesToSkip, isHost } = allValues;
 
     return (
-        <Grid container spacing={1}>
+        <Grid container spacing={1} alignItems='center' justifyContent='center'>
+            <Grid item xs={12}>
+                <Collapse
+                    in={allValues.errorMsg !== ''}
+                >
+                    <Alert
+                        severity='error'
+                        onClose={() => {
+                            setAllValues(prev => {
+                                return { ...prev, errorMsg: '' };
+                            });
+                            return navigate('/', { replace: true });
+                        }}
+                    >
+                        {allValues.errorMsg}
+                    </Alert>
+                </Collapse>
+            </Grid>
             <Grid item xs={12}>
                 <Typography>RoomCode: {params.roomCode}</Typography>
             </Grid>
-            <Grid item xs={12}>
-                <Typography>Votes: {votesToSkip}</Typography>
-            </Grid>
-            <Grid item xs={12}>
-                <Typography>Guest can pause: {String(guestCanPause)}</Typography>
-            </Grid>
-            <Grid item xs={12}>
-                <Typography>Is Host: {String(isHost)}</Typography>
-            </Grid>
+            {!!Object.keys(allValues.song).length && <MusicPlayer {...allValues.song} />}
             {isHost ? renderSettingsButton() : null}
-            <Grid item xs={12}>
+            <Grid item xs={6} style={{ marginTop: 10 }}>
                 <Button variant='contained' color='secondary' onClick={handleLeaveRoom}>Leave Room</Button>
             </Grid>
         </Grid>
