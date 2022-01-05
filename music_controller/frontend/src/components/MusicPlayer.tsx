@@ -14,13 +14,24 @@ interface Song {
     image_url: string;
     is_playing: boolean;
     votes: number;
+    votes_required: number;
     id: string;
 }
 
-const MusicPlayer = ({ image_url, title, artist, is_playing, time, duration }: Song) => {
+const MusicPlayer = ({ image_url, title, artist, is_playing, time, duration, votes, votes_required }: Song) => {
     const songProgress = (time / duration) * 100;
 
-    async function pauseSong() {
+    async function skipSong(event: { preventDefault: () => void; }) {
+        event.preventDefault();
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' }
+        };
+        fetch('/spotify/skip', requestOptions);
+    }
+
+    async function pauseSong(event: { preventDefault: () => void; }) {
+        event.preventDefault();
         const requestOptions = {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' }
@@ -29,7 +40,8 @@ const MusicPlayer = ({ image_url, title, artist, is_playing, time, duration }: S
         console.log('RESPP', resp);
     }
 
-    async function playSong() {
+    async function playSong(event: { preventDefault: () => void; }) {
+        event.preventDefault();
         const requestOptions = {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' }
@@ -53,13 +65,12 @@ const MusicPlayer = ({ image_url, title, artist, is_playing, time, duration }: S
                     </Typography>
                     <div>
                         <IconButton
-                            onClick={() => {
-                                is_playing ? pauseSong() : playSong();
-                            }}
+                            onClick={is_playing ? pauseSong : playSong}
                         >
                             {is_playing ? <PauseIcon /> : <PlayArrowIcon />}
                         </IconButton>
-                        <IconButton>
+                        <IconButton onClick={skipSong}>
+                            {votes} / {votes_required}
                             <SkipNextIcon />
                         </IconButton>
                     </div>

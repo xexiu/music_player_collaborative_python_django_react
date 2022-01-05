@@ -15,6 +15,7 @@ interface Song {
     image_url: string;
     is_playing: boolean;
     votes: number;
+    votes_required: number;
     id: string;
 }
 interface StateProps {

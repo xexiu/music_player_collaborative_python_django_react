@@ -73,7 +73,7 @@ const HomePage = () => {
             <Routes>
                 <Route path='/' element={<RenderHomePage />} />
                 <Route path='/join' element={<RoomJoinPage />} />
-                <Route path='/create' element={<CreateRoomPage />} />
+                <Route path='/create' element={<CreateRoomPage update={false} votesToSkip={0} guestCanPause={false} roomCode={''} />} />
                 <Route path='/room/:roomCode' element={<Room />} />
                 <Route path='/room/:roomCode/settings' element={<RoomSettings />} />
             </Routes>

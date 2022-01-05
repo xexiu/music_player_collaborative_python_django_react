@@ -39,7 +39,10 @@ module.exports = merge(common, {
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify('development')
         }),
-        new MiniCssExtractPlugin({ filename: '../css/styles.css' }),
+        new MiniCssExtractPlugin({
+            filename: '[name].css',
+            chunkFilename: '[id].css'
+        }),
         new BundleAnalyzerPlugin({
             analyzerMode: 'static',
             openAnalyzer: false

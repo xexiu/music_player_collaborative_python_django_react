@@ -46,7 +46,7 @@ module.exports = {
         }),
         new CleanWebpackPlugin({ dangerouslyAllowCleanPatternsOutsideProject: true, dry: false }),
         new HtmlWebpackPlugin({
-            template:'!!ejs-webpack-loader!/templates/custom-insertion/index.ejs',
+            template: '!!ejs-webpack-loader!/templates/custom-insertion/index.ejs',
             filename: path.resolve(__dirname, '../templates/frontend-base.html'),
             inject: false,
             minify: false,
@@ -55,10 +55,13 @@ module.exports = {
         new BundleTracker({ filename: 'webpack-stats.json' })
     ],
     resolve: {
-        extensions: ['.ts', '.tsx', '.js', '.json'],
+        extensions: ['.ts', '.tsx', '.js', '.json', '.css', '.scss'],
         alias: {
             '~': path.resolve(__dirname, '../src')
         },
+        modules: [
+            'node_modules'
+        ]
     },
     module: {
         rules: [
@@ -72,8 +75,9 @@ module.exports = {
                 type: 'javascript/auto',
             },
             {
-                test: /\.s?css$/i,
+                test: /.(scss|css)$/,
                 use: [
+                    'style-loader!css-loader',
                     'css-hot-loader',
                     MiniCssExtractPlugin.loader,
                     {
